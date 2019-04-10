@@ -31,6 +31,7 @@ public class SMTPClient implements SMTPCLient {
         LOG.info("sending mail via SMTP ");
 
         clientSocket = new Socket(serverAdress, serverPort);
+        LOG.info("create socket at adresse"+serverAdress);
         reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(),"UTF-8"));
         writer = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(),"UTF-8"),true);
 
@@ -38,32 +39,86 @@ public class SMTPClient implements SMTPCLient {
         LOG.info(line);
 
         writer.write("EHLO client");
+        writer.flush();
 
         line = reader.readLine();
+        LOG.info(line);
         while(line.startsWith("250")){
 
-            reader.readLine();
+            line = reader.readLine();
+            LOG.info(line);
         }
+
 
         writer.write("MAIL FROM:");
         writer.write(mail.getAuthor());
         writer.write("\n");
-        reader.readLine();
+        writer.flush();
+        line = reader.readLine();
+        LOG.info(line);
 
 
-        //faire une boucle
-        writer.write("RCPT TO:");
-        writer.write(mail.getDestinataires()[0]);
-        writer.write("\n");
-        reader.readLine();
+        for(String destinatair : mail.getDestinataires()){
+            writer.write("RCPT TO:");
+            writer.write(destinatair);
+            writer.write("\n");
 
+            writer.flush();
+            line = reader.readLine();
+            LOG.info(line);
+        }
+
+        for(String copies : mail.getCopies()){
+            writer.write("RCPT TO:");
+            writer.write(copies);
+            writer.write("\n");
+
+            writer.flush();
+            line = reader.readLine();
+            LOG.info(line);
+        }
+
+        for(String copieCache : mail.getCopies_caches()){
+            writer.write("RCPT TO:");
+            writer.write(copieCache);
+            writer.write("\n");
+
+            writer.flush();
+            line = reader.readLine();
+            LOG.info(line);
+        }
 
         writer.write("DATA");
-        reader.readLine();
+        writer.flush();
+        line = reader.readLine();
+        LOG.info(line);
 
-        writer.write("Subject:");
-        writer.write(mail.getSujet());
+        writer.write("From: ");
+        writer.write(mail.getAuthor());
+        writer.write('\n');
+
+        writer.write("To: ");
+        for(String destinatair : mail.getDestinataires()){
+            writer.write(destinatair+ ", ");
+        }
         writer.write("\n");
+
+        writer.write("Cc: ");
+        for(String copy : mail.getCopies()){
+            writer.write(copy+ ", ");
+        }
+        writer.write("\n");
+
+        writer.write("Bcc: ");
+        for(String copy : mail.getCopies()){
+            writer.write(copy+ ", ");
+        }
+        writer.write("\n");
+
+
+        writer.write("Subject: ");
+        writer.write(mail.getSujet());
+        writer.write("\n\n");
 
         writer.write(mail.getTexte());
         writer.write("\n");
@@ -71,12 +126,18 @@ public class SMTPClient implements SMTPCLient {
 
         writer.write(".");
         writer.write("\n");
-        reader.readLine();
+        writer.flush();
+        line= reader.readLine();
+        LOG.info(line);
 
         writer.write("QUIT");
         writer.write("\n");
-        reader.readLine();
+        writer.flush();
+        line= reader.readLine();
+        LOG.info(line);
 
+        writer.close();
+        reader.close();
         clientSocket.close();
 
 
