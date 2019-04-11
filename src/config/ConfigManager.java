@@ -9,6 +9,8 @@ import java.util.Properties;
 public class ConfigManager {
 
     private InputStream inputStream;
+    private String messageFile;
+    private String victimFile;
     private String serverAdress;
     private int serverPort;
     private  int numberOfGroup;
@@ -35,13 +37,22 @@ public class ConfigManager {
         return maliciusUser;
     }
 
-    public ConfigManager() throws IOException {
+    public String getMessageFile() {
+        return messageFile;
+    }
+
+    public String getVictimFile() {
+        return victimFile;
+    }
+
+    public ConfigManager()throws IOException{
 
         try {
             Properties prop = new Properties();
+
             String propFileName = "config.properties";
 
-            inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
 
             if (inputStream != null) {
                 prop.load(inputStream);
@@ -50,6 +61,8 @@ public class ConfigManager {
             }
 
             // get the property value and print it out
+            messageFile = prop.getProperty("messageFile");
+            victimFile = prop.getProperty("victimFile");
              serverAdress = prop.getProperty("serverAdress");
              serverPort = Integer.parseInt(prop.getProperty("serverPort"));
              numberOfGroup = Integer.parseInt(prop.getProperty("numberOfGroup"));
@@ -59,7 +72,15 @@ public class ConfigManager {
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         } finally {
-            inputStream.close();
+
+            try {
+                if( inputStream!=null ) {
+                    inputStream.close();
+                }
+            } catch(IOException e) {
+                System.out.println("Exception: " + e);
+            }
+
         }
     }
 }

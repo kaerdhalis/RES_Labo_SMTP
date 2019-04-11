@@ -10,11 +10,11 @@ public class Person {
         this.mailAdress = mailAdress;
         String delim = "@";
         String tokens[] = mailAdress.split(delim);
-        delim = ".";
+        delim = "\\.";
         String name[]= tokens[0].split(delim);
 
         this.firstName = name[0];
-        this.lastName = name[0];
+        this.lastName = name[1];
 
     }
 
@@ -24,6 +24,9 @@ public class Person {
         this.mailAdress = mailAdress;
     }
 
+    public String toString(){
+        return firstName + " " + lastName + " " + mailAdress;
+    }
     public String getFirstName() {
         return firstName;
     }

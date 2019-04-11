@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class messageReader {
+public class MessageReader {
 
     private String fileName;
 
-    public messageReader(String fileName) {
+    public MessageReader(String fileName) {
         this.fileName = fileName;
     }
 
@@ -37,16 +37,18 @@ public class messageReader {
                if(line.startsWith("===")) {
 
                    messages.put(subject,message);
-                   subject = null;
-                   message = null;
+                   subject = "";
+                   message = "";
+                   title = true;
                }
                else if(title) {
 
                    subject = line;
+                   title = false;
                }
                else {
 
-                   message += line;
+                   message += line +"\n";
                }
 
            }
