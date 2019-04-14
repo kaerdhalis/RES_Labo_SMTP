@@ -39,6 +39,9 @@ public class MessageReader {
 
            while((line = bufferedReader.readLine()) != null) {
 
+               if (line.startsWith("#"))
+                continue;
+
                if(line.startsWith("===")) {
 
                    messages.put(subject,message);
