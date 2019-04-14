@@ -1,9 +1,6 @@
 package config;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,11 +23,19 @@ public class MessageReader {
 
        try {
            // FileReader reads text files in the default encoding.
-           FileReader fileReader = new FileReader(fileName);
+//           FileReader fileReader = new FileReader(fileName);
+//
+//
+//           // Always wrap FileReader in BufferedReader.
+//           BufferedReader bufferedReader =
+//                   new BufferedReader(fileReader);
 
-           // Always wrap FileReader in BufferedReader.
-           BufferedReader bufferedReader =
-                   new BufferedReader(fileReader);
+
+           FileInputStream fIs = new FileInputStream(fileName);
+
+           InputStreamReader isr = new InputStreamReader(fIs,"UTF-8");
+
+           BufferedReader bufferedReader = new BufferedReader(isr);
 
            while((line = bufferedReader.readLine()) != null) {
 
