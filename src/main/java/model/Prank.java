@@ -6,9 +6,18 @@ public class Prank {
 
     private Person senderVictim;
     private ArrayList<Person> toVictiom;
+    private ArrayList<Person> copies;
     private String subject;
     private String message;
 
+
+    public ArrayList<Person> getCopies() {
+        return copies;
+    }
+
+    public void setCopies(ArrayList<Person> copies) {
+        this.copies = copies;
+    }
 
     public Mail generateMail(){
 
@@ -22,6 +31,15 @@ public class Prank {
             victims[i] = vic.getMailAdress();
             i++;
         }
+
+        String[] copie = new String[copies.size()];
+         i = 0;
+        for(Person copy : copies){
+            copie[i] = copy.getMailAdress();
+            i++;
+        }
+
+        mail.setCopies(copie);
 
         mail.setDestinataires(victims);
         mail.setSujet(subject);

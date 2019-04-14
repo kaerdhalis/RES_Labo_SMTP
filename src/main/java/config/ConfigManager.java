@@ -1,8 +1,12 @@
 package config;
 
+import model.Person;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -15,7 +19,10 @@ public class ConfigManager {
     private int serverPort;
     private  int numberOfGroup;
     private String witnessCc;
-    private String maliciusUser;
+    private Map<String,String> messages;
+    private List<Person> victims;
+
+
 
     public String getServerAdress() {
         return serverAdress;
@@ -33,16 +40,20 @@ public class ConfigManager {
         return witnessCc;
     }
 
-    public String getMaliciusUser() {
-        return maliciusUser;
-    }
-
     public String getMessageFile() {
         return messageFile;
     }
 
     public String getVictimFile() {
         return victimFile;
+    }
+
+    public Map<String, String> getMessages() {
+        return messages;
+    }
+
+    public List<Person> getVictims() {
+        return victims;
     }
 
     public ConfigManager()throws IOException{
@@ -67,7 +78,6 @@ public class ConfigManager {
              serverPort = Integer.parseInt(prop.getProperty("serverPort"));
              numberOfGroup = Integer.parseInt(prop.getProperty("numberOfGroup"));
              witnessCc = prop.getProperty("witnessCc");
-             maliciusUser = prop.getProperty("maliciusUser");
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
@@ -82,5 +92,11 @@ public class ConfigManager {
             }
 
         }
+
+        messages = new MessageReader(messageFile).getMessages();
+        victims = new VictimReader(victimFile).getVictims();
+
+
+
     }
 }

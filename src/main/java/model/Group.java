@@ -1,12 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Group {
 
-    private ArrayList<Person> groupember;
+    private ArrayList<Person> groupember = new ArrayList<>();
     private Person sender;
-    private ArrayList<Person> receivers;
+    private ArrayList<Person> receivers = new ArrayList<>();
 
     public void  add(Person p){
         groupember.add(p);

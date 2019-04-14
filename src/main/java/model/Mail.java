@@ -6,9 +6,8 @@ public class Mail {
 
 
     private String author;
-    private String[] destinataires;
+    private String[] destinataires ;
     private String[] copies;
-    private String[] copies_caches;
     private String sujet;
     private String texte;
 
@@ -36,13 +35,7 @@ public class Mail {
         this.copies = copies;
     }
 
-    public String[] getCopies_caches() {
-        return copies_caches;
-    }
 
-    public void setCopies_caches(String[] copies_caches) {
-        this.copies_caches = copies_caches;
-    }
 
     public String getSujet() {
         return sujet;
@@ -58,5 +51,19 @@ public class Mail {
 
     public void setTexte(String texte) {
         this.texte = texte;
+    }
+
+
+    public String toString(){
+
+      String mail = "";
+        mail +=String.format("Athor: %s\n",author);
+        for(String s :destinataires){
+            mail +=String.format("destinataire: %s",s);
+        }
+        mail+= "\n";
+        mail +=String.format("Subject: %s\n",sujet);
+        mail +=String.format("Athor: %s\n",texte);
+        return mail;
     }
 }
